@@ -1,5 +1,5 @@
 class Category:
-    categories = [1, 2, 3]
+    categories = []
 
     @classmethod
     def add(cls, category):
