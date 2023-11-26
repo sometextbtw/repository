@@ -11,10 +11,10 @@ class Category:
 
     @classmethod
     def get(cls, index):
-        if 0 <= index < len(cls.categories):
+        try:
             return cls.categories[index]
-        else:
-            raise IndexError("Wrong index!")
+        except :
+            IndexError("Wrong index!")
 
     @classmethod
     def delete(cls, index):
