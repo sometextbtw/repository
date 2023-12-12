@@ -1,8 +1,8 @@
 import yaml
 
 
-def load(file_path):
-    with open(file_path, "r") as file:
+def load(my_file):
+    with open(my_file, "r") as file:
         return yaml.safe_load(file)
 
 
