@@ -6,15 +6,25 @@ def load(file_path):
         return yaml.safe_load(file)
 
 
-def find_tasks(task_name, tasks_data):
+def find_tasks(task_name, tasks_data, visited=None):
+    if visited is None:
+        visited = set()
+
     task_info = []
     for task in tasks_data:
         if task["name"] == task_name:
             task_info = task
             break
+
     dependencies = []
     if task_info:
         dependencies.extend(task_info.get("dependencies", []))
+        for sub_task_name in dependencies:
+            if sub_task_name not in visited:
+                visited.add(sub_task_name)
+                sub_task_dependencies = find_tasks(sub_task_name, tasks_data, visited)
+                dependencies.extend(sub_task_dependencies)
+
     return dependencies
 
 
@@ -37,9 +47,8 @@ def find_build_tasks(build_name, builds_data, tasks_data):
 builds_data = load("builds.yaml")["builds"]
 tasks_data = load("tasks.yaml")["tasks"]
 
-build_name = "voice_central"
+build_name = "forward_interest"
 build_tasks = find_build_tasks(build_name, builds_data, tasks_data)
-
 
 print(f"Для {build_name} список задач:")
 for task in build_tasks:
